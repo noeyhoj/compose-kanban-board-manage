@@ -73,21 +73,21 @@ class KanbanBoardDataTest {
 
     @Test
     fun `상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다`() {
-        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(task = targetCard, targetStatus = Status.IN_PROGRESS)
 
         assertThat(changeKanbanBoardData.boardList[0].status).isEqualTo(Status.IN_PROGRESS)
     }
 
     @Test
     fun `상태를 To-Do에서 Done으로 옮겼을 때 doneCount가 증가한다`() {
-        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.DONE)
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(task = targetCard, targetStatus = Status.DONE)
 
         assertThat(changeKanbanBoardData.doneCount()).isEqualTo(2)
     }
 
     @Test
     fun `상태를 To-Do에서 In Progress로 변경했을 때 완료율은 변하지 않는다`() {
-        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(taskId = targetCard.id, targetStatus = Status.IN_PROGRESS)
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(task = targetCard, targetStatus = Status.IN_PROGRESS)
 
         assertThat(changeKanbanBoardData.progress()).isEqualTo(kanbanBoardData.progress())
     }

@@ -95,22 +95,4 @@ class KanbanBoardTest {
 
         doneColumn.assertExists()
     }
-
-    @Test
-    fun `태스크 카드를 Done으로 옮겼을 때 완료율이 변경된다`() = runComposeUiTest {
-        // given
-
-        // then
-
-        // when
-    }
-
-    @Test
-    fun `태스크 카드를 Done에서 To Do로 옮겼을 때 완료율이 변경된다`() = runComposeUiTest {
-        // given
-
-        // then
-
-        // when
-    }
 }
