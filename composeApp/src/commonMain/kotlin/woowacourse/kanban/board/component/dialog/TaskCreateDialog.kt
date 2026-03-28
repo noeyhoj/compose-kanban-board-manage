@@ -14,7 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Status
+import woowacourse.kanban.board.model.Tag
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
@@ -22,7 +24,7 @@ fun TaskCreateDialog(
     modifier: Modifier = Modifier,
     statuses: List<Status>,
     names: List<String>,
-    onTaskCreate: (BoardDataState) -> Unit,
+    onTaskCreate: (BoardData) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
     val boardDataState = remember { BoardDataState() }
@@ -90,7 +92,18 @@ fun TaskCreateDialog(
             HorizontalDivider()
             FooterRow(
                 onCancel = onDismissRequest,
-                onCreate = { onTaskCreate(boardDataState) },
+                onCreate = {
+                    val boardData = BoardData(
+                        title = boardDataState.titleInputValue,
+                        description = boardDataState.descriptionInputValue,
+                        tags = if (boardDataState.tagsInputValue.isNotBlank()) {
+                            boardDataState.tagsInputValue.split(",").map { Tag(it) }
+                        } else emptyList(),
+                        status = boardDataState.statusValue,
+                        nickname = boardDataState.nameValue,
+                    )
+                    onTaskCreate(boardData)
+                },
                 isCreateError = isCreateError,
             )
         }

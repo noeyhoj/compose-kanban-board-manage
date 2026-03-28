@@ -32,8 +32,6 @@ import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
-import woowacourse.kanban.board.model.Tag
-import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
 fun KanbanBoard(
@@ -61,19 +59,6 @@ fun KanbanBoard(
 
     fun onShowSnackBar() {
         isShowSnackBar = true
-    }
-
-    fun onTaskCreate(boardDataState: BoardDataState) {
-        val boardData = BoardData(
-            title = boardDataState.titleInputValue,
-            description = boardDataState.descriptionInputValue,
-            tags = if (boardDataState.tagsInputValue.isNotBlank()) {
-                boardDataState.tagsInputValue.split(",").map { Tag(it) }
-            } else emptyList(),
-            status = boardDataState.statusValue,
-            nickname = boardDataState.nameValue,
-        )
-        onAddBoardData(boardData)
     }
 
     suspend fun showSnackBar() {
@@ -146,7 +131,7 @@ fun KanbanBoard(
                         statuses = statuses,
                         names = names,
                         onTaskCreate = {
-                            onTaskCreate(it)
+                            onAddBoardData(it)
                             onDismissRequest()
                             text = "새로운 태스크가 생성되었습니다."
                             onShowSnackBar()
