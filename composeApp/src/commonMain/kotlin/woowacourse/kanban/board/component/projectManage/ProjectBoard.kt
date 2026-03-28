@@ -33,22 +33,20 @@ fun ProjectBoard() {
 
     fun isKanbanBoardDataSelected(kanbanBoardData: KanbanBoardData): Boolean = kanbanBoardDatas.indexOf(kanbanBoardData) == selectedIndex
 
-    fun updateSelectedBoard(update: (KanbanBoardData) -> KanbanBoardData) {
-        kanbanBoardDatas = kanbanBoardDatas.mapIndexed { index, data ->
-            if (index == selectedIndex) update(data) else data
-        }
-    }
-
     Row {
         ProjectSideBar(kanbanBoardDatas, isSelected = { isKanbanBoardDataSelected(it) }, onClick = { selectedOnValueChange(it) })
         VerticalDivider()
         KanbanBoard(
             selectedKanbanBoardData,
             onAddBoardData = { boardData ->
-                updateSelectedBoard { it.addBoardData(boardData) }
+                kanbanBoardDatas = kanbanBoardDatas.map {
+                    if (it.id == selectedKanbanBoardData.id) it.addBoardData(boardData) else it
+                }
             },
-            onMoveBoardDataStatus = { taskId, targetStatus ->
-                updateSelectedBoard { it.moveBoardDataStatus(taskId, targetStatus) }
+            onMoveBoardDataStatus = { task, targetStatus ->
+                kanbanBoardDatas = kanbanBoardDatas.map {
+                    if (it.id == selectedKanbanBoardData.id) it.moveBoardDataStatus(task, targetStatus) else it
+                }
             },
         )
     }

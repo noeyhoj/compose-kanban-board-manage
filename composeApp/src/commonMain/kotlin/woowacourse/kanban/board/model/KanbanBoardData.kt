@@ -1,6 +1,12 @@
 package woowacourse.kanban.board.model
 
-data class KanbanBoardData(val title: String, val boardList: List<BoardData> = emptyList()) {
+import java.util.UUID
+
+data class KanbanBoardData(
+    val id: String = UUID.randomUUID().toString(),
+    val title: String,
+    val boardList: List<BoardData> = emptyList(),
+) {
     fun totalStatusCount(): Int = boardList.size
     fun doneCount(): Int = boardList.count { it.status == Status.DONE }
 
@@ -9,18 +15,12 @@ data class KanbanBoardData(val title: String, val boardList: List<BoardData> = e
 
     fun addBoardData(boardData: BoardData): KanbanBoardData = copy(boardList = boardList + boardData)
 
-    fun moveBoardDataStatus(taskId: Int, targetStatus: Status): KanbanBoardData {
-        val targetIndex = boardList.indexOfFirst { it.id == taskId }
-        if (targetIndex == -1) return this
-
-        val targetBoard = boardList[targetIndex]
-        if (targetBoard.status == targetStatus) return this
-
-        val updatedBoardList = boardList.map { boardData ->
-            if (boardData.id == taskId) boardData.copy(status = targetStatus) else boardData
-        }
-
-        return copy(boardList = updatedBoardList)
+    fun moveBoardDataStatus(task: BoardData, targetStatus: Status): KanbanBoardData {
+        return copy(
+            boardList = boardList.map { boardData ->
+                if (boardData.id == task.id) boardData.copy(status = targetStatus) else boardData
+            },
+        )
     }
 
     fun getStatusBoard(status: Status): List<BoardData> = boardList.filter { it.status == status }

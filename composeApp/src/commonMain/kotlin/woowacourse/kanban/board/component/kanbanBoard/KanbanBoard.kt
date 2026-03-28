@@ -40,7 +40,7 @@ fun KanbanBoard(
     kanbanBoardData: KanbanBoardData,
     modifier: Modifier = Modifier,
     onAddBoardData: (BoardData) -> Unit = {},
-    onMoveBoardDataStatus: (Int, Status) -> Unit = { _, _ -> },
+    onMoveBoardDataStatus: (BoardData, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
 
@@ -85,10 +85,9 @@ fun KanbanBoard(
         isShowSnackBar = false
     }
 
-    var draggedTaskId by remember { mutableStateOf<Int?>(null) }
+    var draggedTask by remember { mutableStateOf<BoardData?>(null) }
     var currentDragPosition by remember { mutableStateOf<Offset?>(null) }
     val columnBounds = remember { mutableStateMapOf<Status, Rect>() }
-    var draggedTaskSourceStatus by remember { mutableStateOf<Status?>(null) }
 
     Box {
         Column(
@@ -114,33 +113,26 @@ fun KanbanBoard(
                             currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
                         },
                         onBoundsChanged = { rect -> columnBounds[status] = rect },
-                        onTaskDragStart = { task ->
-                            draggedTaskId = task.id
-                            draggedTaskSourceStatus = task.status
-                        },
+                        onTaskDragStart = { task -> draggedTask = task },
                         onTaskDragChange = { pos -> currentDragPosition = pos },
                         onTaskDragEnd = {
-                            val dropPosition = currentDragPosition ?: run {
-                                draggedTaskId = null
-                                return@StatusCardManageBox
-                            }
+                            val dropPosition = currentDragPosition ?: return@StatusCardManageBox
                             val targetStatus = columnBounds.entries
                                 .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
 
-                            if (targetStatus != null && draggedTaskId != null) {
-                                if (targetStatus != draggedTaskSourceStatus) {
+                            draggedTask?.let { task ->
+                                if (targetStatus != null && task.status != targetStatus) {
+                                    onMoveBoardDataStatus(task, targetStatus)
                                     text = "태스크가 이동되었습니다."
                                     isShowSnackBar = true
                                 }
-                                onMoveBoardDataStatus(draggedTaskId!!, targetStatus)
                             }
                             currentDragPosition = null
-                            draggedTaskId = null
-                            draggedTaskSourceStatus = null
+                            draggedTask = null
                         },
                         onTaskDragCancel = {
                             currentDragPosition = null
-                            draggedTaskId = null
+                            draggedTask = null
                         },
                     )
                 }

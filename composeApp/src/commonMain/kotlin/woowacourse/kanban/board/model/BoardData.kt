@@ -1,7 +1,9 @@
 package woowacourse.kanban.board.model
 
+import java.util.UUID
+
 data class BoardData(
-    val id: Int = nextId(),
+    val id: String = UUID.randomUUID().toString(),
     val title: String,
     val description: String = "",
     val tags: List<Tag> = emptyList(),
@@ -14,14 +16,6 @@ data class BoardData(
     }
 
     companion object {
-        var ID_COUNT = 0
-
-        private fun nextId(): Int {
-            val current = ID_COUNT
-            ID_COUNT += 1
-            return current
-        }
-
         const val MAX_TAGS_SIZE = 5
         fun isTitleError(title: String): Boolean = title.isBlank()
         fun isTagsError(tags: List<Tag>): Boolean = tags.size > MAX_TAGS_SIZE
