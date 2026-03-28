@@ -37,12 +37,10 @@ import androidx.compose.ui.unit.sp
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
+import woowacourse.kanban.board.constant.KanbanBoardColor
 import woowacourse.kanban.board.constant.MAX_CONTENT
 import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_BORDER_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_CONTENT_COLOR
-import woowacourse.kanban.board.constant.TODO_CARD_BOX_TITLE_COLOR
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
@@ -183,6 +181,10 @@ private fun StatusCardManageBoxPreview() {
     StatusCardManageBox(
         boardList = boardList,
         status = Status.TODO,
-        statusColor = StatusColor(TODO_CARD_BOX_TITLE_COLOR, TODO_CARD_BOX_CONTENT_COLOR, TODO_CARD_BOX_BORDER_COLOR),
+        statusColor = StatusColor(
+            KanbanBoardColor.TODO_CARD_BOX_TITLE_COLOR,
+            KanbanBoardColor.TODO_CARD_BOX_CONTENT_COLOR,
+            KanbanBoardColor.TODO_CARD_BOX_BORDER_COLOR,
+        ),
     )
 }

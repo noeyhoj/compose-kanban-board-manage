@@ -23,9 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import woowacourse.kanban.board.constant.KANBANBOARD_CONTENT_COLOR
-import woowacourse.kanban.board.constant.KANBANBOARD_CREATE_BUTTON_COLOR
-import woowacourse.kanban.board.constant.KANBANBOARD_TITLE_COLOR
+import woowacourse.kanban.board.constant.KanbanBoardColor
 
 @Composable
 fun KanbanBoardTitleBar(
@@ -49,13 +47,13 @@ fun KanbanBoardTitleBar(
             ) {
                 Text(
                     title,
-                    color = Color(KANBANBOARD_TITLE_COLOR),
+                    color = Color(KanbanBoardColor.KANBANBOARD_TITLE_COLOR),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.W500,
                 )
                 Text(
                     "완료율: ${"%.1f".format(progress * 100)}% ($doneCount/$totalStatusCount)",
-                    color = Color(KANBANBOARD_CONTENT_COLOR),
+                    color = Color(KanbanBoardColor.KANBANBOARD_CONTENT_COLOR),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.W400,
                 )
@@ -71,10 +69,10 @@ fun KanbanBoardTitleBar(
 private fun TaskCreateButton(onCreateClick: () -> Unit) {
     Button(
         colors = ButtonColors(
-            containerColor = Color(KANBANBOARD_CREATE_BUTTON_COLOR),
-            contentColor = Color(KANBANBOARD_CREATE_BUTTON_COLOR),
-            disabledContainerColor = Color(KANBANBOARD_CREATE_BUTTON_COLOR),
-            disabledContentColor = Color(KANBANBOARD_CREATE_BUTTON_COLOR),
+            containerColor = Color(KanbanBoardColor.KANBANBOARD_CREATE_BUTTON_COLOR),
+            contentColor = Color(KanbanBoardColor.KANBANBOARD_CREATE_BUTTON_COLOR),
+            disabledContainerColor = Color(KanbanBoardColor.KANBANBOARD_CREATE_BUTTON_COLOR),
+            disabledContentColor = Color(KanbanBoardColor.KANBANBOARD_CREATE_BUTTON_COLOR),
         ),
         shape = RoundedCornerShape(10.dp),
         onClick = onCreateClick,

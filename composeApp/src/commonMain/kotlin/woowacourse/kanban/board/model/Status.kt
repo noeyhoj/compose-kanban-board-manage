@@ -1,6 +1,6 @@
 package woowacourse.kanban.board.model
 
-import woowacourse.kanban.board.constant.*
+import woowacourse.kanban.board.constant.KanbanBoardColor
 
 enum class Status(val state: String) {
     TODO("To Do"),
@@ -12,14 +12,23 @@ data class StatusColor(val titleBgColor: Long, val boardBgColor: Long, val board
     companion object {
         fun getStatusColor(status: Status): StatusColor {
             return when (status) {
-                Status.TODO -> StatusColor(TODO_CARD_BOX_TITLE_COLOR, TODO_CARD_BOX_CONTENT_COLOR, TODO_CARD_BOX_BORDER_COLOR)
-                Status.IN_PROGRESS -> StatusColor(
-                    IN_PROGRESS_CARD_BOX_TITLE_COLOR,
-                    IN_PROGRESS_CARD_BOX_CONTENT_COLOR,
-                    IN_PROGRESS_CARD_BOX_BORDER_COLOR,
+                Status.TODO -> StatusColor(
+                    KanbanBoardColor.TODO_CARD_BOX_TITLE_COLOR,
+                    KanbanBoardColor.TODO_CARD_BOX_CONTENT_COLOR,
+                    KanbanBoardColor.TODO_CARD_BOX_BORDER_COLOR,
                 )
 
-                Status.DONE -> StatusColor(DONE_CARD_BOX_TITLE_COLOR, DONE_CARD_BOX_CONTENT_COLOR, DONE_CARD_BOX_BORDER_COLOR)
+                Status.IN_PROGRESS -> StatusColor(
+                    KanbanBoardColor.IN_PROGRESS_CARD_BOX_TITLE_COLOR,
+                    KanbanBoardColor.IN_PROGRESS_CARD_BOX_CONTENT_COLOR,
+                    KanbanBoardColor.IN_PROGRESS_CARD_BOX_BORDER_COLOR,
+                )
+
+                Status.DONE -> StatusColor(
+                    KanbanBoardColor.DONE_CARD_BOX_TITLE_COLOR,
+                    KanbanBoardColor.DONE_CARD_BOX_CONTENT_COLOR,
+                    KanbanBoardColor.DONE_CARD_BOX_BORDER_COLOR,
+                )
             }
         }
     }
