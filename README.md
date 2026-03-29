@@ -1,40 +1,33 @@
-This is a Kotlin Multiplatform project targeting Android, Desktop (JVM).
+# 🚀 1단계 - 칸반 보드 관리(프로젝트)
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## UI 구현 목록
 
-### Build and Run Android Application
+- [x] 사이드 네비게이션바 구현
+  - [x] 3개의 독립적인 칸반 보드가 있다.
+  - [x] 현재 화면에 나타난 칸반 보드의 타이틀이 네비게이션 바에서 버튼으로 나타난다.
+  - [x] 네비게이션바의 칸반 보드 제목 클릭 시 칸반 보드 화면이 변한다.
+  - [x] 네비게이션바의 칸반 보드의 제목은 한 줄을 넘지 않는다. 
+    - [x] 글씨의 길이가 UI 크기를 넘으면 ...으로 표시된다.
+- [x] 드래그 앤 드롭 구현
+  - [x] 태스크의 상태가 변경 감지시 `태스크가 이동되었습니다.` 스낵바 노출
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+## 기능 구현 목록
 
-### Build and Run Desktop (JVM) Application
+- [x] 태스크가 옮겨졌을 때 상태 변경
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+## 테스트 시나리오
+
+- [x] 상태를 To-Do에서 In Progress으로 옮겼을 때 객체의 상태가 변경된다.
+- [x] 상태를 To-Do에서 Done으로 옮겼을 때 doneCount가 증가한다.
+- [x] 상태를 To-Do에서 In Progress로 변경했을 때 완료율은 변하지 않는다.
+
+# 페어
+@katie0109
+@noeyhoj
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+# 피드백 반영 목록
+
+- [x] BoardData의 Id 구현 방식 수정하기
+- [x] 상수를 모아놓은 코드를 object로 감싸는 방식으로 수정

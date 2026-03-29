@@ -1,0 +1,29 @@
+package woowacourse.kanban.board.constant
+
+// 보드에 사용된 색상
+// 텍스트 필드 칼럼
+const val TEXT_FIELD_BORDER = 0xFF79747E
+const val TEXT_FIELD_ERROR = 0xFFB3261E
+const val TEXT_FIELD_PLACEHOLDER = 0xFFAAAAAA
+const val TEXT_FIELD_HINT = 0xFF49454F
+const val HEADER_TEXT = 0xFF364153
+
+// 생성, 취소 버튼
+const val PRIMARY_TEXT = 0xFF364153
+const val CREATE_BG = 0xFF4F39F6
+const val CREATE_BG_ERROR = 0xFFA7A4BC
+
+// 상태 버튼
+const val PRIMARY_BORDER = 0xFFE5E7EB
+const val STATUS_BORDER_SELECTED = 0xFF1447E6
+const val STATUS_BG_SELECTED = 0xFFEFF6FF
+const val PRIMARY_SUB_TEXT = 0xFF101828
+const val STATUS_TEXT_SELECTED = 0xFF1447E6
+
+// 헤더
+const val CLOSE_ICON_TINT = 0xFF6A7282
+
+// 코치 버튼
+const val COACH_BORDER_SELECTED = 0xFF615FFF
+const val COACH_BG_SELECTED = 0xFFEEF2FF
+const val COACH_ICON_TINT = 0xFF838383
