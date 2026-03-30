@@ -15,7 +15,7 @@ import woowacourse.kanban.board.model.Status
 fun App() {
     var projectData by remember {
         mutableStateOf(
-            ProjectData(),
+            ProjectData(kanbanBoardDatas = ProjectData.defaultKanbanBoardDatas),
         )
     }
 
