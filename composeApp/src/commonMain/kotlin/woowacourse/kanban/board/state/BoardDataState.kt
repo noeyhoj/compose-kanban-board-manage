@@ -47,4 +47,6 @@ class BoardDataState {
     fun isSelectedName(name: String): Boolean {
         return nameValue == name
     }
+
+    fun changeTagsValue(): List<Tag> = if (tagsInputValue.isNotBlank()) tagsInputValue.split(",").map { Tag(it) } else emptyList()
 }

@@ -96,9 +96,7 @@ fun TaskCreateDialog(
                     val boardData = BoardData(
                         title = boardDataState.titleInputValue,
                         description = boardDataState.descriptionInputValue,
-                        tags = if (boardDataState.tagsInputValue.isNotBlank()) {
-                            boardDataState.tagsInputValue.split(",").map { Tag(it) }
-                        } else emptyList(),
+                        tags = boardDataState.changeTagsValue(),
                         status = boardDataState.statusValue,
                         nickname = boardDataState.nameValue,
                     )
