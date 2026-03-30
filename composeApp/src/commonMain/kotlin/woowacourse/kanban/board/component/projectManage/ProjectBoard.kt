@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -29,13 +30,18 @@ import woowacourse.kanban.board.model.Status
 @Composable
 fun ProjectBoard(
     projectData: ProjectData,
-    onAddBoardData: (KanbanBoardData, BoardData) -> Unit,
-    onMoveBoardDataStatus: (KanbanBoardData, BoardData, Status) -> Unit,
+    addBoardData: (KanbanBoardData, BoardData) -> Unit,
+    moveBoardDataStatus: (KanbanBoardData, BoardData, Status) -> Unit,
 ) {
 
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val selectedKanbanBoardData = projectData.kanbanBoardDatas[selectedIndex]
+    val selectedKanbanBoardData = projectData.getIndexingKanbanBoardData(selectedIndex = selectedIndex)
+
+    fun selectedOnValueChange(kanbanBoardData: KanbanBoardData): Int {
+        return projectData.getIndex(kanbanBoardData = kanbanBoardData)
+    }
+
 
     Row {
         ProjectSideBar(
@@ -45,7 +51,7 @@ fun ProjectBoard(
             projectData.kanbanBoardDatas.forEach { kanbanBoardData ->
                 KanbanBoardButton(
                     title = kanbanBoardData.title,
-                    onClick = { selectedIndex = projectData.selectedOnValueChange(kanbanBoardData) },
+                    onClick = { selectedIndex = selectedOnValueChange(kanbanBoardData) },
                     isSelected = selectedKanbanBoardData == kanbanBoardData,
                 )
             }
@@ -54,10 +60,10 @@ fun ProjectBoard(
         KanbanBoard(
             kanbanBoardData = selectedKanbanBoardData,
             onAddBoardData = { boardData ->
-                onAddBoardData(selectedKanbanBoardData, boardData)
+                addBoardData(selectedKanbanBoardData, boardData)
             },
             onMoveBoardDataStatus = { task, targetStatus ->
-                onMoveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)
+                moveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)
             },
         )
     }
@@ -92,9 +98,9 @@ private fun KanbanBoardButton(modifier: Modifier = Modifier, title: String = "",
 @Composable
 private fun ProjectBoardPreview() {
     ProjectBoard(
-        projectData = ProjectData(),
-        onAddBoardData = { _, _ -> },
-        onMoveBoardDataStatus = { _, _, _ -> },
+        projectData = ProjectData(kanbanBoardDatas = ProjectData.defaultKanbanBoardDatas),
+        addBoardData = { _, _ -> },
+        moveBoardDataStatus = { _, _, _ -> },
     )
 }
 
