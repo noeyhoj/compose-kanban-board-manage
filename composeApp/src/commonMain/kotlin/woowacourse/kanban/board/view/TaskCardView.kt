@@ -1,5 +1,6 @@
 package woowacourse.kanban.board.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +23,7 @@ fun TaskCardView(
     onDragChange: (Offset) -> Unit = {},
     onDragEnd: () -> Unit = {},
     onDragCancel: () -> Unit = {},
+    onClick: (BoardData) -> Unit = {},
 ) {
     var cardWindowPosition by remember { mutableStateOf(Offset.Zero) }
 
@@ -40,7 +42,8 @@ fun TaskCardView(
                     onDragEnd = { onDragEnd() },
                     onDragCancel = { onDragCancel() },
                 )
-            },
+            }
+            .clickable(onClick = { onClick(boardData) }),
         board = boardData,
     )
 }

@@ -28,16 +28,20 @@ import androidx.compose.ui.window.Dialog
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import woowacourse.kanban.board.component.dialog.TaskCreateDialog
+import woowacourse.kanban.board.component.dialog.TaskEditDialog
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
+import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
 fun KanbanBoard(
     kanbanBoardData: KanbanBoardData,
     modifier: Modifier = Modifier,
     onAddBoardData: (BoardData) -> Unit = {},
+    onEditBoardData: (BoardData) -> Unit = {},
+    onDeleteBoardData: (BoardData) -> Unit = {},
     onMoveBoardDataStatus: (BoardData, Status) -> Unit = { _, _ -> },
 ) {
     val statuses = remember { Status.entries }
@@ -45,9 +49,12 @@ fun KanbanBoard(
     val names = remember { listOf("다이노", "페임스") }
 
     var showDialog by remember { mutableStateOf(false) }
+    var editDialog by remember { mutableStateOf(false) }
     var isShowSnackBar by remember { mutableStateOf(false) }
 
     var text by remember { mutableStateOf("새로운 태스크가 생성되었습니다.") }
+
+    var boardDataState by remember { mutableStateOf(BoardDataState()) }
 
     fun onCreateClick() {
         showDialog = true
@@ -119,6 +126,17 @@ fun KanbanBoard(
                             currentDragPosition = null
                             draggedTask = null
                         },
+                        onClick = { boardData ->
+                            boardDataState = BoardDataState(
+                                id = boardData.id,
+                                title = boardData.title,
+                                description = boardData.description,
+                                tags = boardData.tags.map { it.text }.joinToString(","),
+                                status = boardData.status,
+                                name = boardData.nickname,
+                            )
+                            editDialog = true
+                        },
                     )
                 }
             }
@@ -128,8 +146,10 @@ fun KanbanBoard(
                     onDismissRequest = { onDismissRequest() },
                 ) {
                     TaskCreateDialog(
+                        boardDataState = BoardDataState(),
                         statuses = statuses,
                         names = names,
+                        title = "새 태스크 생성",
                         onTaskCreate = {
                             onAddBoardData(it)
                             onDismissRequest()
@@ -137,6 +157,32 @@ fun KanbanBoard(
                             onShowSnackBar()
                         },
                         onDismissRequest = { onDismissRequest() },
+                    )
+                }
+            }
+
+            if (editDialog) {
+                Dialog(
+                    onDismissRequest = { editDialog = false },
+                ) {
+                    TaskEditDialog(
+                        boardDataState = boardDataState,
+                        statuses = statuses,
+                        names = names,
+                        title = "기존 태스크 수정",
+                        onEditTask = { boardData ->
+                            onEditBoardData(boardData)
+                            editDialog = false
+                            text = "태스크가 수정되었습니다."
+                            onShowSnackBar()
+                        },
+                        onDeleteTask = { boardData ->
+                            onDeleteBoardData(boardData)
+                            editDialog = false
+                            text = "태스크가 삭제되었습니다."
+                            onShowSnackBar()
+                        },
+                        onDismissRequest = { editDialog = false },
                     )
                 }
             }

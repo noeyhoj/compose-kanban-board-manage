@@ -5,13 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import woowacourse.kanban.board.component.projectManage.ProjectBoard
-import woowacourse.kanban.board.model.BoardData
-import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.ProjectData
-import woowacourse.kanban.board.model.Status
 
 @Composable
 fun App() {
@@ -25,6 +20,12 @@ fun App() {
         projectData = projectData,
         addBoardData = { selectedKanbanBoardData, boardData ->
             projectData = projectData.addBoardData(selectedKanbanBoardData = selectedKanbanBoardData, boardData = boardData)
+        },
+        editBoardData = { selectedKanbanBoardData, boardData ->
+            projectData = projectData.editBoardData(selectedKanbanBoardData, boardData)
+        },
+        deleteBoardData = { selectedKanbanBoardData, boardData ->
+            projectData = projectData.deleteBoardData(selectedKanbanBoardData, boardData)
         },
         moveBoardDataStatus = { selectedKanbanBoardData, task, targetStatus ->
             projectData = projectData.moveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)

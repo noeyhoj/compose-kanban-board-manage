@@ -59,6 +59,7 @@ fun StatusCardManageBox(
     onTaskDragChange: (Offset) -> Unit = {},
     onTaskDragEnd: () -> Unit = {},
     onTaskDragCancel: () -> Unit = {},
+    onClick: (BoardData) -> Unit,
 ) {
 
     val isDropTarget by remember { derivedStateOf { getIsDropTarget() } }
@@ -133,6 +134,7 @@ fun StatusCardManageBox(
                             onDragChange = onTaskDragChange,
                             onDragEnd = onTaskDragEnd,
                             onDragCancel = onTaskDragCancel,
+                            onClick = { onClick(boardData) },
                         )
                     }
                     if (index != boardList.lastIndex) Box(modifier = Modifier.height(12.dp))
@@ -186,5 +188,6 @@ private fun StatusCardManageBoxPreview() {
             KanbanBoardColor.TODO_CARD_BOX_CONTENT_COLOR,
             KanbanBoardColor.TODO_CARD_BOX_BORDER_COLOR,
         ),
+        onClick = {},
     )
 }

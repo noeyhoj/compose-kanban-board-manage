@@ -3,9 +3,12 @@ package woowacourse.kanban.board.component.dialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -13,18 +16,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import woowacourse.kanban.board.constant.CREATE_BG
+import woowacourse.kanban.board.constant.CREATE_BG_ERROR
+import woowacourse.kanban.board.constant.PRIMARY_TEXT
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
-fun TaskCreateDialog(
+fun TaskEditDialog(
     modifier: Modifier = Modifier,
     boardDataState: BoardDataState,
     statuses: List<Status>,
     names: List<String>,
     title: String = "",
-    onTaskCreate: (BoardData) -> Unit,
+    onEditTask: (BoardData) -> Unit,
+    onDeleteTask: (BoardData) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
 
@@ -90,21 +97,53 @@ fun TaskCreateDialog(
                 CoachButton(name = name, isSelected = isSelected, onClick = onClick)
             }
             HorizontalDivider()
-            FooterRow(
-                onCancel = onDismissRequest,
-                onCreate = {
-                    val boardData = BoardData(
-                        id = boardDataState.id,
-                        title = boardDataState.titleInputValue,
-                        description = boardDataState.descriptionInputValue,
-                        tags = boardDataState.changeTagsValue(),
-                        status = boardDataState.statusValue,
-                        nickname = boardDataState.nameValue,
-                    )
-                    onTaskCreate(boardData)
-                },
-                isCreateError = isCreateError,
-            )
+            Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                FooterButton(
+                    modifier = Modifier,
+                    text = "취소",
+                    backgroundColor = Color.White,
+                    textColor = Color(PRIMARY_TEXT),
+                    onClick = onDismissRequest,
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                FooterButton(
+                    modifier = Modifier,
+                    text = "삭제",
+                    textColor = Color.White,
+                    backgroundColor = if (!isCreateError) Color(CREATE_BG) else Color(CREATE_BG_ERROR),
+                    onClick = {
+                        val boardData = BoardData(
+                            id = boardDataState.id,
+                            title = boardDataState.titleInputValue,
+                            description = boardDataState.descriptionInputValue,
+                            tags = boardDataState.changeTagsValue(),
+                            status = boardDataState.statusValue,
+                            nickname = boardDataState.nameValue,
+                        )
+                        onDeleteTask(boardData)
+                    },
+                    enabled = !isCreateError,
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                FooterButton(
+                    modifier = Modifier,
+                    text = "수정",
+                    textColor = Color.White,
+                    backgroundColor = if (!isCreateError) Color(CREATE_BG) else Color(CREATE_BG_ERROR),
+                    onClick = {
+                        val boardData = BoardData(
+                            id = boardDataState.id,
+                            title = boardDataState.titleInputValue,
+                            description = boardDataState.descriptionInputValue,
+                            tags = boardDataState.changeTagsValue(),
+                            status = boardDataState.statusValue,
+                            nickname = boardDataState.nameValue,
+                        )
+                        onEditTask(boardData)
+                    },
+                    enabled = !isCreateError,
+                )
+            }
         }
     }
 }

@@ -1,8 +1,6 @@
 package woowacourse.kanban.board.model
 
-data class ProjectData(
-    val kanbanBoardDatas: List<KanbanBoardData> = emptyList(),
-) {
+data class ProjectData(val kanbanBoardDatas: List<KanbanBoardData> = emptyList()) {
     fun getIndexingKanbanBoardData(selectedIndex: Int): KanbanBoardData {
         return kanbanBoardDatas[selectedIndex]
     }
@@ -15,6 +13,22 @@ data class ProjectData(
         return copy(
             kanbanBoardDatas = kanbanBoardDatas.map { kanbanBoardData ->
                 if (kanbanBoardData.id == selectedKanbanBoardData.id) kanbanBoardData.addBoardData(boardData) else kanbanBoardData
+            },
+        )
+    }
+
+    fun editBoardData(selectedKanbanBoardData: KanbanBoardData, targetBoardData: BoardData): ProjectData {
+        return copy(
+            kanbanBoardDatas = kanbanBoardDatas.map { kanbanBoardData ->
+                if (kanbanBoardData.id == selectedKanbanBoardData.id) kanbanBoardData.editBoardData(targetBoardData) else kanbanBoardData
+            },
+        )
+    }
+
+    fun deleteBoardData(selectedKanbanBoardData: KanbanBoardData, targetBoardData: BoardData): ProjectData {
+        return copy(
+            kanbanBoardDatas = kanbanBoardDatas.map { kanbanBoardData ->
+                if (kanbanBoardData.id == selectedKanbanBoardData.id) kanbanBoardData.deleteBoardData(targetBoardData) else kanbanBoardData
             },
         )
     }

@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +30,8 @@ import woowacourse.kanban.board.model.Status
 fun ProjectBoard(
     projectData: ProjectData,
     addBoardData: (KanbanBoardData, BoardData) -> Unit,
+    editBoardData: (KanbanBoardData, BoardData) -> Unit,
+    deleteBoardData: (KanbanBoardData, BoardData) -> Unit,
     moveBoardDataStatus: (KanbanBoardData, BoardData, Status) -> Unit,
 ) {
 
@@ -41,7 +42,6 @@ fun ProjectBoard(
     fun selectedOnValueChange(kanbanBoardData: KanbanBoardData): Int {
         return projectData.getIndex(kanbanBoardData = kanbanBoardData)
     }
-
 
     Row {
         ProjectSideBar(
@@ -61,6 +61,12 @@ fun ProjectBoard(
             kanbanBoardData = selectedKanbanBoardData,
             onAddBoardData = { boardData ->
                 addBoardData(selectedKanbanBoardData, boardData)
+            },
+            onEditBoardData = { boardData ->
+                editBoardData(selectedKanbanBoardData, boardData)
+            },
+            onDeleteBoardData = { boardData ->
+                deleteBoardData(selectedKanbanBoardData, boardData)
             },
             onMoveBoardDataStatus = { task, targetStatus ->
                 moveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)
@@ -100,6 +106,8 @@ private fun ProjectBoardPreview() {
     ProjectBoard(
         projectData = ProjectData(kanbanBoardDatas = ProjectData.defaultKanbanBoardDatas),
         addBoardData = { _, _ -> },
+        editBoardData = { _, _ -> },
+        deleteBoardData = { _, _ -> },
         moveBoardDataStatus = { _, _, _ -> },
     )
 }

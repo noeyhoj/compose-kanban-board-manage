@@ -7,12 +7,19 @@ import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
-class BoardDataState {
-    var titleInputValue by mutableStateOf("")
-    var descriptionInputValue by mutableStateOf("")
-    var tagsInputValue by mutableStateOf("")
-    var statusValue by mutableStateOf(Status.TODO)
-    var nameValue by mutableStateOf("다이노")
+class BoardDataState(
+    val id: String = "",
+    title: String = "",
+    description: String = "",
+    tags: String = "",
+    status: Status = Status.TODO,
+    name: String = "다이노",
+) {
+    var titleInputValue by mutableStateOf(title)
+    var descriptionInputValue by mutableStateOf(description)
+    var tagsInputValue by mutableStateOf(tags)
+    var statusValue by mutableStateOf(status)
+    var nameValue by mutableStateOf(name)
 
     var isTitleError by mutableStateOf(false)
     var isTagsError by mutableStateOf(false)

@@ -45,7 +45,7 @@ fun FooterRow(onCancel: () -> Unit, onCreate: () -> Unit, isCreateError: Boolean
 }
 
 @Composable
-private fun FooterButton(
+fun FooterButton(
     text: String,
     backgroundColor: Color,
     textColor: Color,
