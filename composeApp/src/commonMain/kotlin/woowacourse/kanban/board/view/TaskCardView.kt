@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,14 +33,18 @@ fun TaskCardView(
             // 1) 카드가 화면 어디에 있는지 추적 (스크롤 대응을 위해 상태로 관리)
             .onGloballyPositioned { cardWindowPosition = it.positionInWindow() }
             // 2) 드래그 제스처 감지
-            .pointerInput(boardData.id) {
+            .pointerInput(boardData) {
                 detectDragGestures(
                     onDragStart = { onDragStart() },
                     onDrag = { change, _ ->
                         change.consume()
                         onDragChange(cardWindowPosition + change.position)
                     },
-                    onDragEnd = { onDragEnd() },
+                    onDragEnd = {
+                        println("옮기기 전 카드 데이터 : $boardData")
+                        onDragEnd()
+                        println("옮긴 후 카드 데이터 : $boardData")
+                                },
                     onDragCancel = { onDragCancel() },
                 )
             }

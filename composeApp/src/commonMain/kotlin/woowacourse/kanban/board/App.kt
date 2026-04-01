@@ -23,12 +23,14 @@ fun App() {
         },
         editBoardData = { selectedKanbanBoardData, boardData ->
             projectData = projectData.editBoardData(selectedKanbanBoardData, boardData)
+            println("수정 : ${projectData.kanbanBoardDatas[0]}")
         },
         deleteBoardData = { selectedKanbanBoardData, boardData ->
             projectData = projectData.deleteBoardData(selectedKanbanBoardData, boardData)
         },
         moveBoardDataStatus = { selectedKanbanBoardData, task, targetStatus ->
             projectData = projectData.moveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)
-        },
+            println("움직임 : ${projectData.kanbanBoardDatas[0]}")
+        }
     )
 }

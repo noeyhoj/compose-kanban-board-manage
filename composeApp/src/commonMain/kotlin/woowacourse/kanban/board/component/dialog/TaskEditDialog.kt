@@ -27,15 +27,13 @@ import woowacourse.kanban.board.state.BoardDataState
 fun TaskEditDialog(
     modifier: Modifier = Modifier,
     boardDataState: BoardDataState,
-    statuses: List<Status>,
-    names: List<String>,
     title: String = "",
     onEditTask: (BoardData) -> Unit,
     onDeleteTask: (BoardData) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
 
-    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank()
+    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank() || (boardDataState.nameValue == "" && boardDataState.statusValue != Status.TODO)
 
     Column(
         modifier = modifier
@@ -82,7 +80,7 @@ fun TaskEditDialog(
             )
             CommonButtonColumn(
                 header = "상태 *",
-                items = statuses,
+                items = boardDataState.statuses,
                 isSelected = { boardDataState.isSelectedStatus(it) },
                 onValueChange = { boardDataState.statusOnValueChange(it) },
             ) { status, isSelected, onClick ->
@@ -90,7 +88,7 @@ fun TaskEditDialog(
             }
             CommonButtonColumn(
                 header = "담당자 *",
-                items = names,
+                items = boardDataState.names(),
                 isSelected = { boardDataState.isSelectedName(it) },
                 onValueChange = { boardDataState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
@@ -110,7 +108,7 @@ fun TaskEditDialog(
                     modifier = Modifier,
                     text = "삭제",
                     textColor = Color.White,
-                    backgroundColor = if (!isCreateError) Color(CREATE_BG) else Color(CREATE_BG_ERROR),
+                    backgroundColor = Color(0xFFDB6365),
                     onClick = {
                         val boardData = BoardData(
                             id = boardDataState.id,
@@ -122,7 +120,6 @@ fun TaskEditDialog(
                         )
                         onDeleteTask(boardData)
                     },
-                    enabled = !isCreateError,
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 FooterButton(

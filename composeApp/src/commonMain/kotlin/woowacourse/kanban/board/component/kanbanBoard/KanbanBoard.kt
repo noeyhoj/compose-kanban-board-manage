@@ -34,6 +34,8 @@ import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
 import woowacourse.kanban.board.state.BoardDataState
+import woowacourse.kanban.board.state.KanbanBoardState
+import kotlin.io.path.Path
 
 @Composable
 fun KanbanBoard(
@@ -44,42 +46,7 @@ fun KanbanBoard(
     onDeleteBoardData: (BoardData) -> Unit = {},
     onMoveBoardDataStatus: (BoardData, Status) -> Unit = { _, _ -> },
 ) {
-    val statuses = remember { Status.entries }
-
-    val names = remember { listOf("다이노", "페임스") }
-
-    var showDialog by remember { mutableStateOf(false) }
-    var editDialog by remember { mutableStateOf(false) }
-    var isShowSnackBar by remember { mutableStateOf(false) }
-
-    var text by remember { mutableStateOf("새로운 태스크가 생성되었습니다.") }
-
-    var boardDataState by remember { mutableStateOf(BoardDataState()) }
-
-    fun onCreateClick() {
-        showDialog = true
-    }
-
-    fun onDismissRequest() {
-        showDialog = false
-    }
-
-    fun onShowSnackBar() {
-        isShowSnackBar = true
-    }
-
-    suspend fun showSnackBar() {
-        delay(3000.milliseconds)
-        isShowSnackBar = false
-    }
-
-    fun onSnackBarCancelClick() {
-        isShowSnackBar = false
-    }
-
-    var draggedTask by remember { mutableStateOf<BoardData?>(null) }
-    var currentDragPosition by remember { mutableStateOf<Offset?>(null) }
-    val columnBounds = remember { mutableStateMapOf<Status, Rect>() }
+    val kanbanBoardState = remember { KanbanBoardState() }
 
     Box {
         Column(
@@ -90,7 +57,7 @@ fun KanbanBoard(
                 progress = kanbanBoardData.progress(),
                 doneCount = kanbanBoardData.doneCount(),
                 totalStatusCount = kanbanBoardData.totalStatusCount(),
-                onCreateClick = { onCreateClick() },
+                onCreateClick = { kanbanBoardState.onCreateClick() },
             )
             Row(
                 modifier = Modifier.padding(24.dp),
@@ -101,104 +68,71 @@ fun KanbanBoard(
                         boardList = kanbanBoardData.getStatusBoard(status),
                         status = status,
                         statusColor = StatusColor.getStatusColor(status),
-                        getIsDropTarget = {
-                            currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
-                        },
-                        onBoundsChanged = { rect -> columnBounds[status] = rect },
-                        onTaskDragStart = { task -> draggedTask = task },
-                        onTaskDragChange = { pos -> currentDragPosition = pos },
+                        getIsDropTarget = { kanbanBoardState.getIsDropTarget(status) },
+                        onBoundsChanged = { rect -> kanbanBoardState.onBoundsChanged(rect, status) },
+                        onTaskDragStart = { task -> kanbanBoardState.onTaskDragStart(task) },
+                        onTaskDragChange = { pos -> kanbanBoardState.onTaskDragChange(pos) },
                         onTaskDragEnd = {
-                            val dropPosition = currentDragPosition ?: return@StatusCardManageBox
-                            val targetStatus = columnBounds.entries
-                                .firstOrNull { (_, rect) -> rect.contains(dropPosition) }?.key
-
-                            draggedTask?.let { task ->
-                                if (targetStatus != null && task.status != targetStatus) {
-                                    onMoveBoardDataStatus(task, targetStatus)
-                                    text = "태스크가 이동되었습니다."
-                                    isShowSnackBar = true
-                                }
-                            }
-                            currentDragPosition = null
-                            draggedTask = null
+                            kanbanBoardState.onTaskDragEnd(onMoveBoardDataStatus)
                         },
-                        onTaskDragCancel = {
-                            currentDragPosition = null
-                            draggedTask = null
-                        },
-                        onClick = { boardData ->
-                            boardDataState = BoardDataState(
-                                id = boardData.id,
-                                title = boardData.title,
-                                description = boardData.description,
-                                tags = boardData.tags.map { it.text }.joinToString(","),
-                                status = boardData.status,
-                                name = boardData.nickname,
-                            )
-                            editDialog = true
-                        },
+                        onTaskDragCancel = { kanbanBoardState.onTaskDragCancel() },
+                        onClick = { boardData -> kanbanBoardState.onCardClick(boardData) },
                     )
                 }
             }
 
-            if (showDialog) {
+            if (kanbanBoardState.showDialog) {
                 Dialog(
-                    onDismissRequest = { onDismissRequest() },
+                    onDismissRequest = { kanbanBoardState.onDismissRequest() },
                 ) {
                     TaskCreateDialog(
                         boardDataState = BoardDataState(),
-                        statuses = statuses,
-                        names = names,
                         title = "새 태스크 생성",
                         onTaskCreate = {
                             onAddBoardData(it)
-                            onDismissRequest()
-                            text = "새로운 태스크가 생성되었습니다."
-                            onShowSnackBar()
+                            kanbanBoardState.onTaskCreate()
                         },
-                        onDismissRequest = { onDismissRequest() },
+                        onDismissRequest = { kanbanBoardState.onDismissRequest() },
                     )
                 }
             }
 
-            if (editDialog) {
+            if (kanbanBoardState.editDialog) {
                 Dialog(
-                    onDismissRequest = { editDialog = false },
+                    onDismissRequest = { kanbanBoardState.editDialog = false },
                 ) {
                     TaskEditDialog(
-                        boardDataState = boardDataState,
-                        statuses = statuses,
-                        names = names,
                         title = "기존 태스크 수정",
                         onEditTask = { boardData ->
                             onEditBoardData(boardData)
-                            editDialog = false
-                            text = "태스크가 수정되었습니다."
-                            onShowSnackBar()
+                            kanbanBoardState.onEditTask()
                         },
                         onDeleteTask = { boardData ->
-                            onDeleteBoardData(boardData)
-                            editDialog = false
-                            text = "태스크가 삭제되었습니다."
-                            onShowSnackBar()
+                            if (boardData.status != Status.REVIEW && boardData.status != Status.DONE) {
+                                onDeleteBoardData(boardData)
+                                kanbanBoardState.onDeleteTask()
+                            } else {
+                                kanbanBoardState.onNotDeleteTask()
+                            }
                         },
-                        onDismissRequest = { editDialog = false },
+                        onDismissRequest = { kanbanBoardState.editDialog = false },
+                        boardDataState = kanbanBoardState.boardDataState,
                     )
                 }
             }
         }
-        LaunchedEffect(isShowSnackBar) {
-            if (isShowSnackBar) showSnackBar()
+        LaunchedEffect(kanbanBoardState.isShowSnackBar) {
+            if (kanbanBoardState.isShowSnackBar) kanbanBoardState.showSnackBar()
         }
-        if (isShowSnackBar) CreateAlertSnackBar(
+        if (kanbanBoardState.isShowSnackBar) CreateAlertSnackBar(
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(4.dp))
                 .background(color = Color(0xFF322F35))
                 .padding(start = 16.dp)
                 .size(width = 344.dp, height = 48.dp)
                 .align(alignment = Alignment.BottomCenter),
-            text = text,
-            onClick = { onSnackBarCancelClick() },
+            text = kanbanBoardState.text,
+            onClick = { kanbanBoardState.onSnackBarCancelClick() },
         )
     }
 }

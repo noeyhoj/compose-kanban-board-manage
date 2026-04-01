@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -21,14 +22,12 @@ import woowacourse.kanban.board.state.BoardDataState
 fun TaskCreateDialog(
     modifier: Modifier = Modifier,
     boardDataState: BoardDataState,
-    statuses: List<Status>,
-    names: List<String>,
     title: String = "",
     onTaskCreate: (BoardData) -> Unit,
     onDismissRequest: () -> Unit,
 ) {
 
-    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank()
+    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank() || (boardDataState.nameValue == "" && boardDataState.statusValue != Status.TODO)
 
     Column(
         modifier = modifier
@@ -75,7 +74,7 @@ fun TaskCreateDialog(
             )
             CommonButtonColumn(
                 header = "상태 *",
-                items = statuses,
+                items = boardDataState.statuses,
                 isSelected = { boardDataState.isSelectedStatus(it) },
                 onValueChange = { boardDataState.statusOnValueChange(it) },
             ) { status, isSelected, onClick ->
@@ -83,7 +82,7 @@ fun TaskCreateDialog(
             }
             CommonButtonColumn(
                 header = "담당자 *",
-                items = names,
+                items = boardDataState.names(),
                 isSelected = { boardDataState.isSelectedName(it) },
                 onValueChange = { boardDataState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
@@ -94,7 +93,6 @@ fun TaskCreateDialog(
                 onCancel = onDismissRequest,
                 onCreate = {
                     val boardData = BoardData(
-                        id = boardDataState.id,
                         title = boardDataState.titleInputValue,
                         description = boardDataState.descriptionInputValue,
                         tags = boardDataState.changeTagsValue(),

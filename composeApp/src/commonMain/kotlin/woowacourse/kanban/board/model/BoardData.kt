@@ -8,7 +8,7 @@ data class BoardData(
     val description: String = "",
     val tags: List<Tag> = emptyList(),
     val status: Status,
-    val nickname: String,
+    val nickname: String = "",
 ) {
     init {
         require(!isTitleError(title)) { "[ERROR] 제목이 비어있으면 안됩니다." }

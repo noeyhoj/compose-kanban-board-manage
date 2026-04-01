@@ -37,7 +37,7 @@ fun ProjectBoard(
 
     var selectedIndex by remember { mutableStateOf(0) }
 
-    val selectedKanbanBoardData = projectData.getIndexingKanbanBoardData(selectedIndex = selectedIndex)
+    val selectedKanbanBoardData = projectData.getIndexingKanbanBoardData(selectedIndex)
 
     fun selectedOnValueChange(kanbanBoardData: KanbanBoardData): Int {
         return projectData.getIndex(kanbanBoardData = kanbanBoardData)
@@ -64,6 +64,7 @@ fun ProjectBoard(
             },
             onEditBoardData = { boardData ->
                 editBoardData(selectedKanbanBoardData, boardData)
+                println("KanbanBoard에서 edit했을 때 : ${selectedKanbanBoardData.boardList}")
             },
             onDeleteBoardData = { boardData ->
                 deleteBoardData(selectedKanbanBoardData, boardData)
@@ -103,12 +104,29 @@ private fun KanbanBoardButton(modifier: Modifier = Modifier, title: String = "",
 @Preview(showBackground = true)
 @Composable
 private fun ProjectBoardPreview() {
+    var projectData by remember {
+        mutableStateOf(
+            ProjectData(kanbanBoardDatas = ProjectData.defaultKanbanBoardDatas),
+        )
+    }
+
     ProjectBoard(
-        projectData = ProjectData(kanbanBoardDatas = ProjectData.defaultKanbanBoardDatas),
-        addBoardData = { _, _ -> },
-        editBoardData = { _, _ -> },
-        deleteBoardData = { _, _ -> },
-        moveBoardDataStatus = { _, _, _ -> },
+        projectData = projectData,
+        addBoardData = { selectedKanbanBoardData, boardData ->
+            projectData = projectData.addBoardData(selectedKanbanBoardData = selectedKanbanBoardData, boardData = boardData)
+        },
+        editBoardData = { selectedKanbanBoardData, boardData ->
+            projectData = projectData.editBoardData(selectedKanbanBoardData, boardData)
+            println("수정 : ${projectData.kanbanBoardDatas[0]}")
+        },
+        deleteBoardData = { selectedKanbanBoardData, boardData ->
+            projectData = projectData.deleteBoardData(selectedKanbanBoardData, boardData)
+        },
+        moveBoardDataStatus = { selectedKanbanBoardData, task, targetStatus ->
+            println("움직이기 전 : ${projectData.kanbanBoardDatas[0]}")
+            projectData = projectData.moveBoardDataStatus(selectedKanbanBoardData, task, targetStatus)
+            println("움직임 : ${projectData.kanbanBoardDatas[0]}")
+        }
     )
 }
 

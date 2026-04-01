@@ -15,6 +15,17 @@ class BoardDataState(
     status: Status = Status.TODO,
     name: String = "다이노",
 ) {
+
+    val statuses = Status.entries
+
+    fun names(): List<String> {
+        return if (statusValue == Status.TODO) {
+            listOf("", "다이노", "페임스")
+        } else {
+            listOf("다이노", "페임스")
+        }
+    }
+
     var titleInputValue by mutableStateOf(title)
     var descriptionInputValue by mutableStateOf(description)
     var tagsInputValue by mutableStateOf(tags)
