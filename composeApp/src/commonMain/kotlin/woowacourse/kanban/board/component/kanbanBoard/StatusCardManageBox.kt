@@ -59,7 +59,7 @@ fun StatusCardManageBox(
     onTaskDragChange: (Offset) -> Unit = {},
     onTaskDragEnd: () -> Unit = {},
     onTaskDragCancel: () -> Unit = {},
-    onClick: (BoardData) -> Unit,
+    onClick: (BoardData) -> Unit = {},
 ) {
 
     val isDropTarget by remember { derivedStateOf { getIsDropTarget() } }

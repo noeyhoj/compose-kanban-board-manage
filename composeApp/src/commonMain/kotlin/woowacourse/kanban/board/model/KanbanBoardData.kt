@@ -21,7 +21,7 @@ data class KanbanBoardData(
     )
 
     fun deleteBoardData(targetBoardData: BoardData): KanbanBoardData = copy(
-        boardList = boardList.filter { it.id != targetBoardData.id }
+        boardList = boardList.filter { it.id != targetBoardData.id },
     )
     fun moveBoardDataStatus(task: BoardData, targetStatus: Status): KanbanBoardData {
         return copy(

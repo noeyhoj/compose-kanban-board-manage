@@ -27,7 +27,11 @@ import woowacourse.kanban.board.model.Status
 fun StatusButton(status: Status, onClick: () -> Unit, modifier: Modifier = Modifier, isSelected: Boolean = false) {
     Box(
         modifier = modifier.clip(shape = RoundedCornerShape(10.dp))
-            .border(width = 2.dp, color = Color(if (isSelected) STATUS_BORDER_SELECTED else PRIMARY_BORDER), shape = RoundedCornerShape(10.dp))
+            .border(
+                width = 2.dp,
+                color = Color(if (isSelected) STATUS_BORDER_SELECTED else PRIMARY_BORDER),
+                shape = RoundedCornerShape(10.dp),
+            )
             .background(Color(if (isSelected) STATUS_BG_SELECTED else 0xFFFFFFFF), shape = RoundedCornerShape(10.dp))
             .clickable(
                 onClick = onClick,

@@ -24,7 +24,6 @@ import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
-import woowacourse.kanban.board.state.BoardDataState
 import woowacourse.kanban.board.state.KanbanBoardState
 
 @Composable

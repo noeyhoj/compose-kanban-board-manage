@@ -19,7 +19,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +32,6 @@ import woowacourse.kanban.board.constant.PRIMARY_TEXT
 import woowacourse.kanban.board.constant.TEXT_FIELD_ERROR
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
-import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
@@ -47,7 +45,12 @@ fun TaskDialog(
     onDismissRequest: () -> Unit,
 ) {
 
-    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank() || boardDataState.isNicknameError || boardDataState.isNicknameError
+    val isCreateError =
+        boardDataState.isTitleError ||
+            boardDataState.isTagsError ||
+            boardDataState.titleInputValue.isBlank() ||
+            boardDataState.isNicknameError ||
+            boardDataState.isNicknameError
 
     Column(
         modifier = modifier
@@ -120,7 +123,7 @@ fun TaskDialog(
                         boardDataState.isNicknameError -> "담당자를 지정해주세요."
                         else -> ""
                     },
-                    color = Color(TEXT_FIELD_ERROR)
+                    color = Color(TEXT_FIELD_ERROR),
                 )
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {

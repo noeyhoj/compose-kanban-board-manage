@@ -1,7 +1,10 @@
 package woowacourse.kanban.board.model
 
 enum class MoveStatus {
-    SUCCESS, IN_PROGRESS, FAILED;
+    SUCCESS,
+    IN_PROGRESS,
+    FAILED,
+    ;
 
     companion object {
         fun getMoveStatus(task: BoardData, targetStatus: Status): MoveStatus {

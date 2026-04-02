@@ -2,16 +2,13 @@ package woowacourse.kanban.board.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.ProjectData
 import woowacourse.kanban.board.model.Status
 
-class ProjectBoardState(
-    kanbanBoardDatas: List<KanbanBoardData>
-) {
+class ProjectBoardState(kanbanBoardDatas: List<KanbanBoardData>) {
     var projectData by mutableStateOf(ProjectData(kanbanBoardDatas))
 
     var selectedIndex by mutableStateOf(0)

@@ -6,13 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import woowacourse.kanban.board.constant.DialogMessage
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
 import woowacourse.kanban.board.model.MoveStatus
 import woowacourse.kanban.board.model.Status
-import kotlin.time.Duration.Companion.milliseconds
 
 class KanbanBoardState {
 
@@ -80,11 +80,17 @@ class KanbanBoardState {
         return currentDragPosition?.let { columnBounds[status]?.contains(it) } ?: false
     }
 
-    fun onBoundsChanged(rect: Rect, status: Status) { columnBounds[status] = rect }
+    fun onBoundsChanged(rect: Rect, status: Status) {
+        columnBounds[status] = rect
+    }
 
-    fun onTaskDragStart(task: BoardData) { draggedTask = task }
+    fun onTaskDragStart(task: BoardData) {
+        draggedTask = task
+    }
 
-    fun onTaskDragChange(pos: Offset) { currentDragPosition = pos }
+    fun onTaskDragChange(pos: Offset) {
+        currentDragPosition = pos
+    }
 
     fun onTaskDragEnd(onMoveBoardDataStatus: (BoardData, Status) -> Unit) {
         val dropPosition = currentDragPosition ?: return
@@ -93,7 +99,7 @@ class KanbanBoardState {
 
         draggedTask?.let { task ->
             if (targetStatus != null && task.status != targetStatus) {
-                when(MoveStatus.getMoveStatus(task, targetStatus)) {
+                when (MoveStatus.getMoveStatus(task, targetStatus)) {
                     MoveStatus.SUCCESS -> {
                         onMoveBoardDataStatus(task, targetStatus)
                         text = DialogMessage.MOVE_SUCCESS_MESSAGE
