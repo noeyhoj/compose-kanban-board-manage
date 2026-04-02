@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,27 +33,17 @@ import woowacourse.kanban.board.constant.PRIMARY_SUB_TEXT
 
 @Composable
 fun CoachButton(isSelected: Boolean, name: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val unSelectedModifier = modifier.border(
-        width = 2.dp, color = Color(PRIMARY_BORDER), shape = RoundedCornerShape(10.dp),
-    )
-    val selectedModifier = modifier.border(
-        width = 2.dp, color = Color(COACH_BORDER_SELECTED), shape = RoundedCornerShape(10.dp),
-    ).background(color = Color(COACH_BG_SELECTED), shape = RoundedCornerShape(10.dp))
-
     Box(
-        modifier = if (!isSelected) {
-            unSelectedModifier
-        } else {
-            selectedModifier
-        }
-            .clickable(
-                onClick = onClick,
-            ),
+        modifier = modifier.clip(shape = RoundedCornerShape(10.dp)).clickable(
+            onClick = onClick,
+        ).border(
+            width = 2.dp, color = Color(if (isSelected) COACH_BORDER_SELECTED else PRIMARY_BORDER), shape = RoundedCornerShape(10.dp),
+        ).background(color = Color(if (isSelected) COACH_BG_SELECTED else 0xFFFFFFFF), shape = RoundedCornerShape(10.dp)),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp).fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             if (name.isNotBlank()) {
                 Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "코치 프로필 아이콘", tint = Color(COACH_ICON_TINT))

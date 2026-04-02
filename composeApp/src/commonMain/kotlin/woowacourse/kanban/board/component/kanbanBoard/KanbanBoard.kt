@@ -11,31 +11,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.delay
-import woowacourse.kanban.board.component.dialog.TaskCreateDialog
-import woowacourse.kanban.board.component.dialog.TaskEditDialog
+import woowacourse.kanban.board.component.dialog.TaskDialog
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.StatusColor
 import woowacourse.kanban.board.state.BoardDataState
 import woowacourse.kanban.board.state.KanbanBoardState
-import kotlin.io.path.Path
 
 @Composable
 fun KanbanBoard(
@@ -81,28 +71,18 @@ fun KanbanBoard(
                 }
             }
 
-            if (kanbanBoardState.showDialog) {
+            if (kanbanBoardState.showCreateDialog || kanbanBoardState.showEditDialog) {
                 Dialog(
                     onDismissRequest = { kanbanBoardState.onDismissRequest() },
                 ) {
-                    TaskCreateDialog(
-                        boardDataState = BoardDataState(),
-                        title = "새 태스크 생성",
+                    TaskDialog(
+                        modifier = Modifier.clip(shape = RoundedCornerShape(25.dp)),
+                        boardDataState = kanbanBoardState.boardDataState,
+                        dialogStatus = kanbanBoardState.dialogStatus,
                         onTaskCreate = {
                             onAddBoardData(it)
                             kanbanBoardState.onTaskCreate()
                         },
-                        onDismissRequest = { kanbanBoardState.onDismissRequest() },
-                    )
-                }
-            }
-
-            if (kanbanBoardState.editDialog) {
-                Dialog(
-                    onDismissRequest = { kanbanBoardState.editDialog = false },
-                ) {
-                    TaskEditDialog(
-                        title = "기존 태스크 수정",
                         onEditTask = { boardData ->
                             onEditBoardData(boardData)
                             kanbanBoardState.onEditTask()
@@ -115,8 +95,7 @@ fun KanbanBoard(
                                 kanbanBoardState.onNotDeleteTask()
                             }
                         },
-                        onDismissRequest = { kanbanBoardState.editDialog = false },
-                        boardDataState = kanbanBoardState.boardDataState,
+                        onDismissRequest = { kanbanBoardState.onDismissRequest() },
                     )
                 }
             }

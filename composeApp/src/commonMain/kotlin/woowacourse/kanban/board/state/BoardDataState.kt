@@ -35,6 +35,8 @@ class BoardDataState(
     var isTitleError by mutableStateOf(false)
     var isTagsError by mutableStateOf(false)
 
+    var isNicknameError by mutableStateOf(false)
+
     fun titleOnValueChange(value: String) {
         titleInputValue = value
         isTitleError = BoardData.isTitleError(titleInputValue)
@@ -52,6 +54,7 @@ class BoardDataState(
 
     fun statusOnValueChange(status: Status) {
         statusValue = status
+        isNicknameError = (nameValue == "" && statusValue != Status.TODO)
     }
 
     fun isSelectedStatus(status: Status): Boolean {
@@ -60,6 +63,7 @@ class BoardDataState(
 
     fun nameOnValueChange(name: String) {
         nameValue = name
+        isNicknameError = (nameValue == "" && statusValue != Status.TODO)
     }
 
     fun isSelectedName(name: String): Boolean {

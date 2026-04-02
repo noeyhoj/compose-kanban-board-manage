@@ -32,7 +32,6 @@ import woowacourse.kanban.board.model.Tag
 fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .clip(shape = RoundedCornerShape(15.dp))
             .background(color = Color.White)
             .border(
                 width = 1.dp,
@@ -56,11 +55,13 @@ fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
                 TagsComponent(tags = board.tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
             }
 
-            // 구분선
-            HorizontalDivider(thickness = 2.dp)
+            if (board.nickname.isNotBlank()) {
+                // 구분선
+                HorizontalDivider(thickness = 2.dp)
 
-            // 작성자
-            ProfileComponent(nickname = board.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
+                // 작성자
+                ProfileComponent(nickname = board.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
+            }
         }
     }
 }
