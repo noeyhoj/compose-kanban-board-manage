@@ -47,8 +47,7 @@ fun TaskDialog(
     onDismissRequest: () -> Unit,
 ) {
 
-    val isCreateError =
-        boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank() || boardDataState.isNicknameError || boardDataState.isNicknameError
+    val isCreateError = boardDataState.isTitleError || boardDataState.isTagsError || boardDataState.titleInputValue.isBlank() || boardDataState.isNicknameError || boardDataState.isNicknameError
 
     Column(
         modifier = modifier

@@ -44,11 +44,7 @@ fun TaskCardView(
                         change.consume()
                         onDragChange(cardWindowPosition + change.position)
                     },
-                    onDragEnd = {
-                        println("옮기기 전 카드 데이터 : $boardData")
-                        onDragEnd()
-                        println("옮긴 후 카드 데이터 : $boardData")
-                                },
+                    onDragEnd = { onDragEnd() },
                     onDragCancel = { onDragCancel() },
                 )
             }
