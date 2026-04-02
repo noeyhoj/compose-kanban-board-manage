@@ -13,6 +13,7 @@ import woowacourse.kanban.board.constant.MAX_TITLE
 class KanbanBoardDataTest {
     private val boardList = listOf(
         BoardData(
+            id = "0",
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
@@ -20,28 +21,38 @@ class KanbanBoardDataTest {
             nickname = DEFAULT_NAME,
         ),
         BoardData(
+            id = "1",
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
         BoardData(
+            id = "2",
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.IN_PROGRESS,
             nickname = DEFAULT_NAME,
         ),
         BoardData(
+            id = "3",
             title = DEFAULT_TITLE,
             status = Status.TODO,
             nickname = DEFAULT_NAME,
         ),
         BoardData(
+            id = "4",
             title = MAX_TITLE,
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
             status = Status.DONE,
             nickname = MAX_NAME,
+        ),
+        BoardData(
+            id = "5",
+            title = "제목",
+            status = Status.REVIEW,
+            nickname = "다이노",
         ),
     )
 
@@ -90,5 +101,47 @@ class KanbanBoardDataTest {
         val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(task = targetCard, targetStatus = Status.IN_PROGRESS)
 
         assertThat(changeKanbanBoardData.progress()).isEqualTo(kanbanBoardData.progress())
+    }
+
+    @Test
+    fun `칸반 보드 리스트에 보드 데이터를 추가하면 칸반 보드 리스트에 추가된 보드 데이터가 유지된다`() {
+        val boardData = BoardData(
+            id = "0",
+            title = "제목",
+            status = Status.TODO,
+            nickname = "다이노",
+        )
+
+        val changeKanbanBoardData = kanbanBoardData.addBoardData(boardData)
+
+        assertThat(changeKanbanBoardData.boardList.count { it.title == "제목" }).isEqualTo(1)
+    }
+
+    @Test
+    fun `칸반 보드 리스트에 존재하는 보드 데이터의 정보 중 닉네임을 다이노에서 페임스로 수정하면 수정된 보드 데이터가 유지된다`() {
+        val targetBoardData = BoardData(
+            id = "0",
+            title = "제목",
+            status = Status.TODO,
+            nickname = "페임스",
+        )
+
+        val changeKanbanBoardData = kanbanBoardData.editBoardData(targetBoardData)
+
+        assertThat(changeKanbanBoardData.boardList.find { it.id == "0" }!!.nickname).isEqualTo("페임스")
+    }
+
+    @Test
+    fun `칸반 보드 리스트에 존재하는 보드 데이터를 REVIEW에서 DONE으로 옮겼을 때 옮겨진 보드 데이터가 유지된다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[5], Status.DONE)
+
+        assertThat(changeKanbanBoardData.boardList[5].status).isEqualTo(Status.DONE)
+    }
+
+    @Test
+    fun `칸반 보드 리스트에 존재하는 id가 0인 보드 데이터를 삭제했을 때 칸반 보드 리스트에 id가 0인 보드 데이터가 존재하지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.deleteBoardData(targetCard)
+
+        assertThat(changeKanbanBoardData.boardList.count { it.id == "0" }).isEqualTo(0)
     }
 }
