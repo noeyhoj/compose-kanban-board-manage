@@ -99,7 +99,7 @@ class KanbanBoardState {
 
         draggedTask?.let { task ->
             if (targetStatus != null && task.status != targetStatus) {
-                when (MoveStatus.getMoveStatus(task, targetStatus)) {
+                when (task.getMoveStatus(targetStatus)) {
                     MoveStatus.SUCCESS -> {
                         onMoveBoardDataStatus(task, targetStatus)
                         text = DialogMessage.MOVE_SUCCESS_MESSAGE
