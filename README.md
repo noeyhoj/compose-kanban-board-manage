@@ -87,3 +87,4 @@ Done
 - [ ] TaskDialog의 에러 메세지 분기문을 유지보수에 용이하게 변경하기
 - [ ] companion objecct를 최소화해서 구현하기
 - [ ] on~ 메소드명 수정하기
+- [x] tags를 다루는 로직 리펙터링

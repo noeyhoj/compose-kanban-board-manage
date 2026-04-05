@@ -128,7 +128,7 @@ class KanbanBoardState {
             id = boardData.id,
             title = boardData.title,
             description = boardData.description,
-            tags = boardData.tags.map { it.text }.joinToString(","),
+            tags = boardData.tags,
             status = boardData.status,
             name = boardData.nickname,
         )

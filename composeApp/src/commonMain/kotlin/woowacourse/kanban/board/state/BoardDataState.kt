@@ -11,7 +11,7 @@ class BoardDataState(
     val id: String = "",
     title: String = "",
     description: String = "",
-    tags: String = "",
+    tags: List<Tag> = emptyList(),
     status: Status = Status.TODO,
     name: String = "다이노",
 ) {
@@ -28,7 +28,7 @@ class BoardDataState(
 
     var titleInputValue by mutableStateOf(title)
     var descriptionInputValue by mutableStateOf(description)
-    var tagsInputValue by mutableStateOf(tags)
+    var tagsInputValue by mutableStateOf(tags.joinToString(",") { it.text })
     var statusValue by mutableStateOf(status)
     var nameValue by mutableStateOf(name)
 
