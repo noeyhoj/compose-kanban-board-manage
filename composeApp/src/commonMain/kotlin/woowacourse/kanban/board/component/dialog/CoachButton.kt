@@ -45,9 +45,20 @@ fun CoachButton(isSelected: Boolean, name: String, onClick: () -> Unit, modifier
             horizontalArrangement = Arrangement.Center,
         ) {
             if (name.isNotBlank()) {
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "코치 프로필 아이콘", tint = Color(COACH_ICON_TINT))
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(name, fontWeight = FontWeight.W500, fontSize = 14.sp, color = Color(PRIMARY_SUB_TEXT))
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "코치 프로필 아이콘",
+                    tint = Color(COACH_ICON_TINT),
+                )
+                Spacer(
+                    modifier = Modifier.width(12.dp),
+                )
+                Text(
+                    name,
+                    fontWeight = FontWeight.W500,
+                    fontSize = 14.sp,
+                    color = Color(PRIMARY_SUB_TEXT),
+                )
             } else {
                 Text("없음", fontWeight = FontWeight.W500, fontSize = 14.sp, color = Color(PRIMARY_SUB_TEXT))
             }
