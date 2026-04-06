@@ -38,7 +38,7 @@ class KanbanBoardDataTest {
             id = "3",
             title = DEFAULT_TITLE,
             status = Status.TODO,
-            nickname = Nickname.DINO,
+            nickname = Nickname.NONE,
         ),
         BoardData(
             id = "4",
@@ -72,7 +72,6 @@ class KanbanBoardDataTest {
 
     @Test
     fun `5개 중에 done이 1개라면 20%의 완료율을 계산한다`() {
-
         Assertions.assertThat(kanbanBoardData.progress()).isEqualTo(0.2f)
     }
 
@@ -126,16 +125,58 @@ class KanbanBoardDataTest {
     }
 
     @Test
-    fun `칸반 보드 리스트에 존재하는 보드 데이터를 REVIEW에서 DONE으로 옮겼을 때 옮겨진 보드 데이터가 유지된다`() {
+    fun `칸반 보드 리스트에 존재하는 id가 0인 보드 데이터를 삭제했을 때 칸반 보드 리스트에 id가 0인 보드 데이터가 존재하지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.deleteBoardData(targetCard)
+
+        assertThat(changeKanbanBoardData.boardList.count { it.id == "0" }).isEqualTo(0)
+    }
+
+    @Test
+    fun `To Do 상태이며 담당자가 없는 보드 데이터를 In Progress로 옮기려고 할 때 변경이 일어나지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[3], Status.IN_PROGRESS)
+
+        assertThat(changeKanbanBoardData.boardList[3].status).isEqualTo(Status.TODO)
+    }
+
+    @Test
+    fun `To Do 상태인 보드 데이터를 Review로 옮기려고 할 때 변경이 일어나지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[1], Status.REVIEW)
+
+        assertThat(changeKanbanBoardData.boardList[1].status).isEqualTo(Status.TODO)
+    }
+
+    @Test
+    fun `To Do 상태이며 담당자가 존재하는 보드 데이터를 In Progress로 옮겼을 때 보드 데이터의 상태가 변경된다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[1], Status.IN_PROGRESS)
+
+        assertThat(changeKanbanBoardData.boardList[1].status).isEqualTo(Status.IN_PROGRESS)
+    }
+
+    @Test
+    fun `In Progress 상태인 보드 데이터를 Done으로 옮기려고 할 때 변경이 일어나지 않는다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[2], Status.DONE)
+
+        assertThat(changeKanbanBoardData.boardList[2].status).isEqualTo(Status.IN_PROGRESS)
+    }
+
+    @Test
+    fun `In Progress 상태인 보드 데이터를 Review로 옮겼을 때 보드 데이터의 상태가 변경된다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[2], Status.REVIEW)
+
+        assertThat(changeKanbanBoardData.boardList[2].status).isEqualTo(Status.REVIEW)
+    }
+
+    @Test
+    fun `보드 데이터를 REVIEW에서 DONE으로 옮겼을 때 옮겨진 보드 데이터가 유지된다`() {
         val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[0], Status.DONE)
 
         assertThat(changeKanbanBoardData.boardList[0].status).isEqualTo(Status.DONE)
     }
 
     @Test
-    fun `칸반 보드 리스트에 존재하는 id가 0인 보드 데이터를 삭제했을 때 칸반 보드 리스트에 id가 0인 보드 데이터가 존재하지 않는다`() {
-        val changeKanbanBoardData = kanbanBoardData.deleteBoardData(targetCard)
+    fun `보드 데이터를 DONE에서 TODO로 옮겼을 때 옮겨진 보드 데이터가 유지된다`() {
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[4], Status.TODO)
 
-        assertThat(changeKanbanBoardData.boardList.count { it.id == "0" }).isEqualTo(0)
+        assertThat(changeKanbanBoardData.boardList[4].status).isEqualTo(Status.TODO)
     }
 }
