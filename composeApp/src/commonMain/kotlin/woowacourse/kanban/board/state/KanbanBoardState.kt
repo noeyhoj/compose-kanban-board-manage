@@ -32,6 +32,7 @@ class KanbanBoardState {
 
     fun onCreateClick() {
         dialogStatus = DialogStatus.CREATE
+        boardDataState = BoardDataState()
         showCreateDialog = true
     }
 
