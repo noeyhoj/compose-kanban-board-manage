@@ -26,7 +26,11 @@ data class KanbanBoardData(
     fun moveBoardDataStatus(task: BoardData, targetStatus: Status): KanbanBoardData {
         return copy(
             boardList = boardList.map { boardData ->
-                if (boardData.id == task.id) boardData.copy(status = targetStatus) else boardData
+                if (boardData.id == task.id) {
+                    if (boardData.getMoveStatus(targetStatus) == MoveStatus.SUCCESS) boardData.copy(status = targetStatus) else boardData
+                } else {
+                    boardData
+                }
             },
         )
     }

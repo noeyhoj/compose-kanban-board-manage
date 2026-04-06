@@ -109,7 +109,7 @@ fun KanbanBoard(
                 .padding(start = 16.dp)
                 .size(width = 344.dp, height = 48.dp)
                 .align(alignment = Alignment.BottomCenter),
-            text = kanbanBoardState.text,
+            text = kanbanBoardState.snackbarMessage,
             onClick = { kanbanBoardState.onSnackBarCancelClick() },
         )
     }

@@ -20,7 +20,7 @@ class KanbanBoardState {
     var showEditDialog by mutableStateOf(false)
     var isShowSnackBar by mutableStateOf(false)
 
-    var text by mutableStateOf("")
+    var snackbarMessage by mutableStateOf("")
 
     var draggedTask by mutableStateOf<BoardData?>(null)
     var currentDragPosition by mutableStateOf<Offset?>(null)
@@ -37,25 +37,25 @@ class KanbanBoardState {
 
     fun onTaskCreate() {
         onDismissRequest()
-        text = SnackbarMessage.CREATE_SUCCESS_MESSAGE
+        snackbarMessage = SnackbarMessage.CREATE_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onEditTask() {
         showEditDialog = false
-        text = SnackbarMessage.EDIT_SUCCESS_MESSAGE
+        snackbarMessage = SnackbarMessage.EDIT_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onDeleteTask() {
         showEditDialog = false
-        text = SnackbarMessage.DELETE_SUCCESS_MESSAGE
+        snackbarMessage = SnackbarMessage.DELETE_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onNotDeleteTask() {
         showEditDialog = false
-        text = SnackbarMessage.DELETE_FAILED_MESSAGE
+        snackbarMessage = SnackbarMessage.DELETE_FAILED_MESSAGE
         onShowSnackBar()
     }
 
@@ -99,18 +99,20 @@ class KanbanBoardState {
 
         draggedTask?.let { task ->
             if (targetStatus != null && task.status != targetStatus) {
-                when (task.getMoveStatus(targetStatus)) {
+                snackbarMessage = when (task.getMoveStatus(targetStatus)) {
                     MoveStatus.SUCCESS -> {
-                        onMoveBoardDataStatus(task, targetStatus)
-                        text = SnackbarMessage.MOVE_SUCCESS_MESSAGE
+                        SnackbarMessage.MOVE_SUCCESS_MESSAGE
                     }
+
                     MoveStatus.FAILED -> {
-                        text = SnackbarMessage.MOVE_FAILED_MESSAGE
+                        SnackbarMessage.MOVE_FAILED_MESSAGE
                     }
+
                     MoveStatus.IN_PROGRESS -> {
-                        text = SnackbarMessage.MOVE_IN_PROGRESS_FAILED_MESSAGE
+                        SnackbarMessage.MOVE_IN_PROGRESS_FAILED_MESSAGE
                     }
                 }
+                onMoveBoardDataStatus(task, targetStatus)
                 isShowSnackBar = true
             }
         }
