@@ -85,6 +85,7 @@ Done
 
 - [x] 움직임 상태를 바꾸는 것에 대한 메세지를 객체에게 보내기
 - [ ] TaskDialog의 에러 메세지 분기문을 유지보수에 용이하게 변경하기
-- [ ] companion objecct를 최소화해서 구현하기
+- [x] companion objecct를 최소화해서 구현하기
 - [ ] on~ 메소드명 수정하기
 - [x] tags를 다루는 로직 리펙터링
+- [x] FooterButton의 가시성을 private로 변경하기

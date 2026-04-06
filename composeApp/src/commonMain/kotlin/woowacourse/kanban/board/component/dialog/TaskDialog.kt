@@ -18,8 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +30,8 @@ import woowacourse.kanban.board.constant.PRIMARY_TEXT
 import woowacourse.kanban.board.constant.TEXT_FIELD_ERROR
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
+import woowacourse.kanban.board.model.DialogStatus.CREATE
+import woowacourse.kanban.board.model.DialogStatus.EDIT
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
@@ -49,7 +49,6 @@ fun TaskDialog(
         boardDataState.isTitleError ||
             boardDataState.isTagsError ||
             boardDataState.titleInputValue.isBlank() ||
-            boardDataState.isNicknameError ||
             boardDataState.isNicknameError
 
     Column(
@@ -63,7 +62,10 @@ fun TaskDialog(
                 horizontal = 24.dp,
             )
                 .fillMaxWidth(),
-            title = DialogStatus.dialogTitle(dialogStatus),
+            title = when (dialogStatus) {
+                CREATE -> "새 태스크 생성"
+                EDIT -> "기존 태스크 수정"
+            },
             onClick = onDismissRequest,
         )
         HorizontalDivider()
@@ -128,7 +130,7 @@ fun TaskDialog(
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     when (dialogStatus) {
-                        DialogStatus.CREATE -> {
+                        CREATE -> {
                             FooterButton(
                                 modifier = Modifier,
                                 text = "취소",
@@ -156,7 +158,7 @@ fun TaskDialog(
                             )
                         }
 
-                        DialogStatus.EDIT -> {
+                        EDIT -> {
                             FooterButton(
                                 modifier = Modifier,
                                 text = "취소",
@@ -210,7 +212,7 @@ fun TaskDialog(
 }
 
 @Composable
-fun FooterButton(
+private fun FooterButton(
     text: String,
     backgroundColor: Color,
     textColor: Color,
