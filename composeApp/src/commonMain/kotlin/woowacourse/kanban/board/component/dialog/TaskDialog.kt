@@ -32,6 +32,7 @@ import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
 import woowacourse.kanban.board.model.DialogStatus.CREATE
 import woowacourse.kanban.board.model.DialogStatus.EDIT
+import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
@@ -111,7 +112,15 @@ fun TaskDialog(
                 isSelected = { boardDataState.isSelectedName(it) },
                 onValueChange = { boardDataState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
-                CoachButton(name = name, isSelected = isSelected, onClick = onClick)
+                CoachButton(
+                    name = when (name) {
+                        Nickname.DINO -> "다이노"
+                        Nickname.PAMES -> "페임스"
+                        Nickname.NONE -> ""
+                    },
+                    isSelected = isSelected,
+                    onClick = onClick,
+                )
             }
             HorizontalDivider()
             Row(

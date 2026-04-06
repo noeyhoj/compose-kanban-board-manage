@@ -11,7 +11,7 @@ data class BoardData(
     val description: String = "",
     val tags: List<Tag> = emptyList(),
     val status: Status,
-    val nickname: String = "",
+    val nickname: Nickname = Nickname.NONE,
 ) {
     init {
         require(!isTitleError(title)) { "[ERROR] 제목이 비어있으면 안됩니다." }
@@ -20,7 +20,7 @@ data class BoardData(
 
     fun getMoveStatus(targetStatus: Status): MoveStatus {
         return when (status) {
-            Status.TODO if (targetStatus == Status.IN_PROGRESS && nickname == "") -> {
+            Status.TODO if (targetStatus == Status.IN_PROGRESS && nickname == Nickname.NONE) -> {
                 IN_PROGRESS
             }
             Status.TODO if ((targetStatus == Status.REVIEW || targetStatus == Status.DONE)) -> {

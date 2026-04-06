@@ -89,3 +89,4 @@ Done
 - [ ] on~ 메소드명 수정하기
 - [x] tags를 다루는 로직 리펙터링
 - [x] FooterButton의 가시성을 private로 변경하기
+- [x] 하드코딩된 Nickname 리스트를 관리에 용이하도록 하기 위해 enum 객체로 관리하도록 로직을 수정하기

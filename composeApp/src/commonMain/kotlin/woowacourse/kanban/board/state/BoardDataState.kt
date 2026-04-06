@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import woowacourse.kanban.board.model.BoardData
+import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
@@ -13,16 +14,16 @@ class BoardDataState(
     description: String = "",
     tags: List<Tag> = emptyList(),
     status: Status = Status.TODO,
-    name: String = "다이노",
+    name: Nickname = Nickname.DINO,
 ) {
 
     val statuses = Status.entries
 
-    fun names(): List<String> {
+    fun names(): List<Nickname> {
         return if (statusValue == Status.TODO) {
-            listOf("", "다이노", "페임스")
+            Nickname.entries
         } else {
-            listOf("다이노", "페임스")
+            listOf(Nickname.DINO, Nickname.PAMES)
         }
     }
 
@@ -54,19 +55,19 @@ class BoardDataState(
 
     fun statusOnValueChange(status: Status) {
         statusValue = status
-        isNicknameError = (nameValue == "" && statusValue != Status.TODO)
+        isNicknameError = (nameValue == Nickname.NONE && statusValue != Status.TODO)
     }
 
     fun isSelectedStatus(status: Status): Boolean {
         return statusValue == status
     }
 
-    fun nameOnValueChange(name: String) {
+    fun nameOnValueChange(name: Nickname) {
         nameValue = name
-        isNicknameError = (nameValue == "" && statusValue != Status.TODO)
+        isNicknameError = (nameValue == Nickname.NONE && statusValue != Status.TODO)
     }
 
-    fun isSelectedName(name: String): Boolean {
+    fun isSelectedName(name: Nickname): Boolean {
         return nameValue == name
     }
 

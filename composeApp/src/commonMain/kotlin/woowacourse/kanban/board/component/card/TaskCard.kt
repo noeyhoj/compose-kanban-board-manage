@@ -18,12 +18,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import woowacourse.kanban.board.constant.BORDER_COLOR
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
-import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
 import woowacourse.kanban.board.constant.MAX_CONTENT
-import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
 import woowacourse.kanban.board.model.BoardData
+import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
@@ -54,12 +53,20 @@ fun TaskCard(board: BoardData, modifier: Modifier = Modifier) {
                 TagsComponent(tags = board.tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
             }
 
-            if (board.nickname.isNotBlank()) {
+            if (board.nickname != Nickname.NONE) {
                 // 구분선
                 HorizontalDivider(thickness = 2.dp)
 
                 // 작성자
-                ProfileComponent(nickname = board.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
+                ProfileComponent(
+                    nickname = when (board.nickname) {
+                        Nickname.DINO -> "다이노"
+                        Nickname.PAMES -> "페임스"
+                    },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .testTag("프로필"),
+                )
             }
         }
     }
@@ -72,31 +79,31 @@ private class BoardPreviewParameterProvider : PreviewParameterProvider<BoardData
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             title = DEFAULT_TITLE,
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             title = MAX_TITLE,
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
             status = Status.TODO,
-            nickname = MAX_NAME,
+            nickname = Nickname.DINO,
         ),
     )
 }
