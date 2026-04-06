@@ -32,7 +32,6 @@ import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
 import woowacourse.kanban.board.model.DialogStatus.CREATE
 import woowacourse.kanban.board.model.DialogStatus.EDIT
-import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.state.BoardDataState
 
 @Composable
@@ -113,11 +112,7 @@ fun TaskDialog(
                 onValueChange = { boardDataState.nameOnValueChange(it) },
             ) { name, isSelected, onClick ->
                 CoachButton(
-                    name = when (name) {
-                        Nickname.DINO -> "다이노"
-                        Nickname.PAMES -> "페임스"
-                        Nickname.NONE -> ""
-                    },
+                    name = boardDataState.getNickname(name),
                     isSelected = isSelected,
                     onClick = onClick,
                 )
@@ -128,12 +123,7 @@ fun TaskDialog(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = when {
-                        boardDataState.isTitleError -> "제목을 입력해 주세요."
-                        boardDataState.isTagsError -> "태그 형식이 올바르지 않습니다."
-                        boardDataState.isNicknameError -> "담당자를 지정해주세요."
-                        else -> ""
-                    },
+                    text = boardDataState.getDialogMessage(),
                     color = Color(TEXT_FIELD_ERROR),
                 )
 

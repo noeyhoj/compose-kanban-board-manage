@@ -8,7 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
-import woowacourse.kanban.board.constant.DialogMessage
+import woowacourse.kanban.board.constant.SnackbarMessage
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.DialogStatus
 import woowacourse.kanban.board.model.MoveStatus
@@ -37,25 +37,25 @@ class KanbanBoardState {
 
     fun onTaskCreate() {
         onDismissRequest()
-        text = DialogMessage.CREATE_SUCCESS_MESSAGE
+        text = SnackbarMessage.CREATE_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onEditTask() {
         showEditDialog = false
-        text = DialogMessage.EDIT_SUCCESS_MESSAGE
+        text = SnackbarMessage.EDIT_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onDeleteTask() {
         showEditDialog = false
-        text = DialogMessage.DELETE_SUCCESS_MESSAGE
+        text = SnackbarMessage.DELETE_SUCCESS_MESSAGE
         onShowSnackBar()
     }
 
     fun onNotDeleteTask() {
         showEditDialog = false
-        text = DialogMessage.DELETE_FAILED_MESSAGE
+        text = SnackbarMessage.DELETE_FAILED_MESSAGE
         onShowSnackBar()
     }
 
@@ -102,13 +102,13 @@ class KanbanBoardState {
                 when (task.getMoveStatus(targetStatus)) {
                     MoveStatus.SUCCESS -> {
                         onMoveBoardDataStatus(task, targetStatus)
-                        text = DialogMessage.MOVE_SUCCESS_MESSAGE
+                        text = SnackbarMessage.MOVE_SUCCESS_MESSAGE
                     }
                     MoveStatus.FAILED -> {
-                        text = DialogMessage.MOVE_FAILED_MESSAGE
+                        text = SnackbarMessage.MOVE_FAILED_MESSAGE
                     }
                     MoveStatus.IN_PROGRESS -> {
-                        text = DialogMessage.MOVE_IN_PROGRESS_FAILED_MESSAGE
+                        text = SnackbarMessage.MOVE_IN_PROGRESS_FAILED_MESSAGE
                     }
                 }
                 isShowSnackBar = true

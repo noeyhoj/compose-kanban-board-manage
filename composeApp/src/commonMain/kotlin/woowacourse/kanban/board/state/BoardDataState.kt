@@ -3,6 +3,7 @@ package woowacourse.kanban.board.state
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import woowacourse.kanban.board.constant.DialogMessage
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.model.Status
@@ -72,4 +73,20 @@ class BoardDataState(
     }
 
     fun changeTagsValue(): List<Tag> = if (tagsInputValue.isNotBlank()) tagsInputValue.split(",").map { Tag(it) } else emptyList()
+
+    fun getDialogMessage(): String {
+        var message = ""
+        if (isTitleError) message = DialogMessage.TITLE_ERROR_MESSAGE
+        if (isTagsError) message = DialogMessage.TAGS_ERROR_MESSAGE
+        if (isNicknameError) message = DialogMessage.NICKNAME_ERROR_MESSAGE
+        return message
+    }
+
+    fun getNickname(name: Nickname): String {
+        return when (name) {
+            Nickname.DINO -> "다이노"
+            Nickname.PAMES -> "페임스"
+            Nickname.NONE -> ""
+        }
+    }
 }
