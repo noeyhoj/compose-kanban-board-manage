@@ -27,7 +27,7 @@ data class KanbanBoardData(
         return copy(
             boardList = boardList.map { boardData ->
                 if (boardData.id == task.id) {
-                    if (boardData.getMoveStatus(targetStatus) == MoveStatus.SUCCESS) boardData.copy(status = targetStatus) else boardData
+                    if (task.getMoveStatus(targetStatus) == MoveStatus.SUCCESS) boardData.copy(status = targetStatus) else boardData
                 } else {
                     boardData
                 }

@@ -9,6 +9,7 @@ import woowacourse.kanban.board.constant.DEFAULT_CONTENT
 import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
 import woowacourse.kanban.board.model.BoardData
+import woowacourse.kanban.board.model.Nickname
 import woowacourse.kanban.board.model.Status
 import woowacourse.kanban.board.model.Tag
 
@@ -20,7 +21,7 @@ class TaskCardTest {
         content: String = DEFAULT_CONTENT,
         tags: List<Tag> = listOf(Tag("컴포넌트"), Tag("성능")),
         status: Status = Status.TODO,
-        nickname: String = DEFAULT_NAME,
+        nickname: Nickname = Nickname.DINO,
     ) = BoardData(
         title = title,
         description = content,

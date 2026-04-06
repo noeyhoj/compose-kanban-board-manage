@@ -39,7 +39,7 @@ class ProjectDataTest {
         val boardData = BoardData(
             title = "제목",
             status = Status.TODO,
-            nickname = "다이노",
+            nickname = Nickname.DINO,
         )
 
         // when
@@ -58,14 +58,14 @@ class ProjectDataTest {
             id = "0",
             title = "제목",
             status = Status.TODO,
-            nickname = "다이노",
+            nickname = Nickname.DINO,
         )
         val addProjectData = projectData.addBoardData(selectedKanbanBoardData, boardData)
         val newBoardData = BoardData(
             id = "0",
             title = "제목",
             status = Status.TODO,
-            nickname = "페임스",
+            nickname = Nickname.PAMES,
         )
 
         // when
@@ -85,14 +85,14 @@ class ProjectDataTest {
             id = "0",
             title = "제목",
             status = Status.TODO,
-            nickname = "다이노",
+            nickname = Nickname.DINO,
         )
         val addProjectData = projectData.addBoardData(selectedKanbanBoardData, boardData1)
         val boardData2 = BoardData(
             id = "1",
             title = "제목",
             status = Status.TODO,
-            nickname = "페임스",
+            nickname = Nickname.PAMES,
         )
         val newProjectData = addProjectData.addBoardData(selectedKanbanBoardData, boardData2)
 
@@ -113,7 +113,7 @@ class ProjectDataTest {
             id = "0",
             title = "제목",
             status = Status.TODO,
-            nickname = "다이노",
+            nickname = Nickname.DINO,
         )
         val addProjectData = projectData.addBoardData(selectedKanbanBoardData, boardData)
 

@@ -17,28 +17,28 @@ class KanbanBoardDataTest {
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
-            status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            status = Status.REVIEW,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             id = "1",
             title = DEFAULT_TITLE,
             tags = listOf(Tag("컴포넌트"), Tag("성능")),
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             id = "2",
             title = DEFAULT_TITLE,
             description = DEFAULT_CONTENT,
             status = Status.IN_PROGRESS,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             id = "3",
             title = DEFAULT_TITLE,
             status = Status.TODO,
-            nickname = DEFAULT_NAME,
+            nickname = Nickname.DINO,
         ),
         BoardData(
             id = "4",
@@ -46,14 +46,8 @@ class KanbanBoardDataTest {
             description = MAX_CONTENT,
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
             status = Status.DONE,
-            nickname = MAX_NAME,
-        ),
-        BoardData(
-            id = "5",
-            title = "제목",
-            status = Status.REVIEW,
-            nickname = "다이노",
-        ),
+            nickname = Nickname.DINO,
+        )
     )
 
     private val kanbanBoardData = KanbanBoardData(
@@ -69,10 +63,10 @@ class KanbanBoardDataTest {
     }
 
     @Test
-    fun `상태(To-Do, In Progress, Done)별 태스크 개수가 노출된다`() {
-
-        Assertions.assertThat(kanbanBoardData.getStatusBoard(Status.TODO).size).isEqualTo(3)
+    fun `상태(To-Do, In Progress, Review, Done)별 태스크 개수가 노출된다`() {
+        Assertions.assertThat(kanbanBoardData.getStatusBoard(Status.TODO).size).isEqualTo(2)
         Assertions.assertThat(kanbanBoardData.getStatusBoard(Status.IN_PROGRESS).size).isEqualTo(1)
+        Assertions.assertThat(kanbanBoardData.getStatusBoard(Status.REVIEW).size).isEqualTo(1)
         Assertions.assertThat(kanbanBoardData.getStatusBoard(Status.DONE).size).isEqualTo(1)
     }
 
@@ -90,7 +84,7 @@ class KanbanBoardDataTest {
     }
 
     @Test
-    fun `상태를 To-Do에서 Done으로 옮겼을 때 doneCount가 증가한다`() {
+    fun `상태를 Review에서 Done으로 옮겼을 때 doneCount가 증가한다`() {
         val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(task = targetCard, targetStatus = Status.DONE)
 
         assertThat(changeKanbanBoardData.doneCount()).isEqualTo(2)
@@ -106,10 +100,10 @@ class KanbanBoardDataTest {
     @Test
     fun `칸반 보드 리스트에 보드 데이터를 추가하면 칸반 보드 리스트에 추가된 보드 데이터가 유지된다`() {
         val boardData = BoardData(
-            id = "0",
+            id = "7",
             title = "제목",
             status = Status.TODO,
-            nickname = "다이노",
+            nickname = Nickname.DINO,
         )
 
         val changeKanbanBoardData = kanbanBoardData.addBoardData(boardData)
@@ -123,19 +117,19 @@ class KanbanBoardDataTest {
             id = "0",
             title = "제목",
             status = Status.TODO,
-            nickname = "페임스",
+            nickname = Nickname.PAMES,
         )
 
         val changeKanbanBoardData = kanbanBoardData.editBoardData(targetBoardData)
 
-        assertThat(changeKanbanBoardData.boardList.find { it.id == "0" }!!.nickname).isEqualTo("페임스")
+        assertThat(changeKanbanBoardData.boardList.find { it.id == "0" }!!.nickname).isEqualTo(Nickname.PAMES)
     }
 
     @Test
     fun `칸반 보드 리스트에 존재하는 보드 데이터를 REVIEW에서 DONE으로 옮겼을 때 옮겨진 보드 데이터가 유지된다`() {
-        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[5], Status.DONE)
+        val changeKanbanBoardData = kanbanBoardData.moveBoardDataStatus(boardList[0], Status.DONE)
 
-        assertThat(changeKanbanBoardData.boardList[5].status).isEqualTo(Status.DONE)
+        assertThat(changeKanbanBoardData.boardList[0].status).isEqualTo(Status.DONE)
     }
 
     @Test
