@@ -20,8 +20,11 @@ data class BoardData(
 
     fun getMoveStatus(targetStatus: Status): MoveStatus {
         return when (status) {
-            Status.TODO if ((targetStatus == Status.REVIEW || targetStatus == Status.DONE) || nickname == "") -> {
+            Status.TODO if (targetStatus == Status.IN_PROGRESS && nickname == "") -> {
                 IN_PROGRESS
+            }
+            Status.TODO if ((targetStatus == Status.REVIEW || targetStatus == Status.DONE)) -> {
+                FAILED
             }
             Status.IN_PROGRESS if (targetStatus == Status.DONE) -> {
                 FAILED
