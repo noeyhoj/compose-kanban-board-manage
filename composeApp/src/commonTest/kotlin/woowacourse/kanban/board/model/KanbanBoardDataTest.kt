@@ -4,10 +4,8 @@ import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
-import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
 import woowacourse.kanban.board.constant.MAX_CONTENT
-import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
 
 class KanbanBoardDataTest {
@@ -47,7 +45,7 @@ class KanbanBoardDataTest {
             tags = listOf(Tag("너무너무"), Tag("긴태그"), Tag("최대로"), Tag("5자까지"), Tag("5개제한임")),
             status = Status.DONE,
             nickname = Nickname.DINO,
-        )
+        ),
     )
 
     private val kanbanBoardData = KanbanBoardData(

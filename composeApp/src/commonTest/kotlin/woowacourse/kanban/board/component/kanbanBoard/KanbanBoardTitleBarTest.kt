@@ -7,10 +7,8 @@ import androidx.compose.ui.test.runComposeUiTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
-import woowacourse.kanban.board.constant.DEFAULT_NAME
 import woowacourse.kanban.board.constant.DEFAULT_TITLE
 import woowacourse.kanban.board.constant.MAX_CONTENT
-import woowacourse.kanban.board.constant.MAX_NAME
 import woowacourse.kanban.board.constant.MAX_TITLE
 import woowacourse.kanban.board.model.BoardData
 import woowacourse.kanban.board.model.KanbanBoardData
